@@ -9,6 +9,12 @@ interface AuthLogin {
   remember: boolean;
 }
 
+interface AuthRegister {
+  name: string;
+  email: string;
+  password: string;
+}
+
 interface User {
   email: string;
   name: string;
@@ -55,6 +61,33 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
+  const register = async (form: AuthRegister) => {
+    try {
+      const response = await post("/user/register", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        confirmPassword: form.password,
+      });
+
+      const { success } = response;
+
+      if (!success) {
+        throw new Error("Failed to Register");
+      }
+
+      return {
+        success,
+        message: "Register Successfully",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Register Failed",
+      };
+    }
+  };
+
   const logout = () => {
     user.value = {
       email: "",
@@ -66,5 +99,5 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.removeItem("token");
   };
 
-  return { isLoggedIn, login, logout, user };
+  return { isLoggedIn, login, logout, register, user };
 });

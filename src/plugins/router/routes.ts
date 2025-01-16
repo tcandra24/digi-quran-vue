@@ -13,6 +13,14 @@ export const routes = [
         },
       },
       {
+        path: "quran",
+        name: "quran",
+        component: () => import("@/pages/quran/index.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "account-settings",
         name: "account-settings",
         component: () => import("@/pages/account-settings.vue"),
@@ -70,11 +78,17 @@ export const routes = [
         path: "login",
         name: "login",
         component: () => import("@/pages/login.vue"),
+        meta: {
+          guest: true,
+        },
       },
       {
         path: "register",
         name: "register",
         component: () => import("@/pages/register.vue"),
+        meta: {
+          guest: true,
+        },
       },
       {
         path: "/:pathMatch(.*)*",

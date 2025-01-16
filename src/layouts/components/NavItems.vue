@@ -16,6 +16,35 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
   <!-- 👉 Apps & Pages -->
   <VerticalNavSectionTitle
     :item="{
+      heading: 'Apps',
+    }"
+  />
+
+  <VerticalNavLink
+    :item="{
+      title: 'Quran',
+      icon: 'ri-user-settings-line',
+      to: '/quran',
+    }"
+  />
+
+  <VerticalNavSectionTitle
+    :item="{
+      heading: 'Pages',
+    }"
+  />
+
+  <VerticalNavLink
+    :item="{
+      title: 'About',
+      icon: 'ri-user-settings-line',
+      to: '/account-settings',
+    }"
+  />
+
+  <!-- 👉 Apps & Pages -->
+  <VerticalNavSectionTitle
+    :item="{
       heading: 'Apps & Pages',
     }"
   />

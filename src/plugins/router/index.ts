@@ -14,12 +14,25 @@ router.beforeEach((to, from, next) => {
   const store = useAuthStore();
   const { isLoggedIn } = storeToRefs(store);
 
+  if (isLoggedIn.value) {
+    if (to.name === "login" || to.name === "register") {
+      next({
+        name: "dashboard",
+      });
+
+      return;
+    }
+  }
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (isLoggedIn.value) {
       next();
+
       return;
     }
-    next("/login");
+    next({
+      name: "login",
+    });
   } else {
     next();
   }

@@ -1,5 +1,21 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import avatar1 from "@images/avatars/avatar-1.png";
+
+import { useAuthStore } from "@stores/authStore";
+
+const store = useAuthStore();
+const { logout } = store;
+
+const router = useRouter();
+
+const doLogout = () => {
+  logout();
+
+  router.push({
+    name: "login",
+  });
+};
 </script>
 
 <template>
@@ -64,7 +80,7 @@ import avatar1 from "@images/avatars/avatar-1.png";
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="doLogout()">
             <template #prepend>
               <VIcon class="me-2" icon="ri-logout-box-r-line" size="22" />
             </template>

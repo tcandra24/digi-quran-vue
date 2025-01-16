@@ -23,7 +23,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log("Global Error", error);
     return Promise.reject(error);
   }
 );

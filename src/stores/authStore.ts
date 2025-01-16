@@ -3,8 +3,6 @@ import { ref } from "vue";
 
 import { useApi } from "@/composables/useApi";
 
-import type { AxiosError } from "axios";
-
 interface AuthLogin {
   email: string;
   password: string;
@@ -21,7 +19,6 @@ const { post } = useApi();
 export const useAuthStore = defineStore("auth", () => {
   const isLoggedIn = ref<boolean>(false);
   const user = ref<User>();
-  const token = ref<string>("");
 
   const login = async (form: AuthLogin) => {
     try {
@@ -34,7 +31,7 @@ export const useAuthStore = defineStore("auth", () => {
       const { success, token: getToken, user: getUser } = response;
 
       if (!success) {
-        throw new Error("Failed to Login, Username or PAssword is wrong");
+        throw new Error("Failed to Login, Username or Password is wrong");
       }
 
       user.value = {
@@ -42,15 +39,32 @@ export const useAuthStore = defineStore("auth", () => {
         name: getUser.name,
       };
 
-      token.value = getToken;
       isLoggedIn.value = true;
 
-      console.log("ok");
-      // set to localstorage
+      localStorage.setItem("token", getToken);
+
+      return {
+        success,
+        message: "Login Successfully",
+      };
     } catch (error: any) {
-      console.log(error);
+      return {
+        success: false,
+        message: "Login Failed",
+      };
     }
   };
 
-  return { isLoggedIn, login, user, token };
+  const logout = () => {
+    user.value = {
+      email: "",
+      name: "",
+    };
+
+    isLoggedIn.value = false;
+
+    localStorage.removeItem("token");
+  };
+
+  return { isLoggedIn, login, logout, user };
 });

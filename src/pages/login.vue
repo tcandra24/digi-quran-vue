@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTheme } from "vuetify";
-import AuthProvider from "@/views/pages/authentication/AuthProvider.vue";
+import { useRouter } from "vue-router";
 
 import logo from "@images/logo.svg?raw";
 import authV1MaskDark from "@images/pages/auth-v1-mask-dark.png";
@@ -16,6 +16,12 @@ const form = reactive({
   remember: false,
 });
 
+const toastr = ref<boolean>(false);
+const toastrMessage = ref<string>("");
+const toastrColor = ref<string>("");
+
+const loading = ref<boolean>(false);
+
 const vuetifyTheme = useTheme();
 
 const authThemeMask = computed(() => {
@@ -27,15 +33,35 @@ const authThemeMask = computed(() => {
 const isPasswordVisible = ref(false);
 
 const store = useAuthStore();
+const router = useRouter();
 const { login } = store;
-const submit = () => {
-  login(form);
+
+const submit = async () => {
+  try {
+    loading.value = true;
+
+    const { success, message } = await login(form);
+
+    loading.value = false;
+
+    if (!success) {
+      toastrColor.value = "danger";
+    }
+
+    toastrColor.value = "primary";
+    toastr.value = true;
+    toastrMessage.value = message;
+
+    router.push({ name: "dashboard" });
+  } catch (error) {
+    toastr.value = true;
+    toastrMessage.value = "Error, Please Contact Administrator";
+  }
 };
 </script>
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-
   <div class="auth-wrapper d-flex align-center justify-center pa-4">
     <VCard class="auth-card pa-4 pt-7" max-width="448">
       <VCardItem class="justify-center">
@@ -54,6 +80,13 @@ const submit = () => {
       </VCardText>
 
       <VCardText>
+        <vProgressLinear
+          :active="loading"
+          :indeterminate="loading"
+          color="deep-purple-accent-4"
+          absolute
+          bottom
+        />
         <VForm @submit.prevent="submit()">
           <VRow>
             <!-- email -->
@@ -87,7 +120,7 @@ const submit = () => {
               </div>
 
               <!-- login button -->
-              <VBtn block type="submit"> Login </VBtn>
+              <VBtn block type="submit" :disabled="loading"> Login </VBtn>
             </VCol>
 
             <!-- create account -->
@@ -116,6 +149,16 @@ const submit = () => {
 
     <!-- bg img -->
     <VImg class="auth-footer-mask d-none d-md-block" :src="authThemeMask" />
+
+    <v-snackbar v-model="toastr">
+      {{ toastrMessage }}
+
+      <template v-slot:actions>
+        <v-btn :color="toastrColor" variant="text" @click="toastr = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 

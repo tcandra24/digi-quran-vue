@@ -6,6 +6,7 @@ export const routes = [
     children: [
       {
         path: "dashboard",
+        name: "dashboard",
         component: () => import("@/pages/dashboard.vue"),
         meta: {
           requiresAuth: true,
@@ -13,6 +14,7 @@ export const routes = [
       },
       {
         path: "account-settings",
+        name: "account-settings",
         component: () => import("@/pages/account-settings.vue"),
         meta: {
           requiresAuth: true,
@@ -20,6 +22,7 @@ export const routes = [
       },
       {
         path: "typography",
+        name: "typography",
         component: () => import("@/pages/typography.vue"),
         meta: {
           requiresAuth: true,
@@ -27,6 +30,7 @@ export const routes = [
       },
       {
         path: "icons",
+        name: "icons",
         component: () => import("@/pages/icons.vue"),
         meta: {
           requiresAuth: true,
@@ -34,6 +38,7 @@ export const routes = [
       },
       {
         path: "cards",
+        name: "cards",
         component: () => import("@/pages/cards.vue"),
         meta: {
           requiresAuth: true,
@@ -41,6 +46,7 @@ export const routes = [
       },
       {
         path: "tables",
+        name: "tables",
         component: () => import("@/pages/tables.vue"),
         meta: {
           requiresAuth: true,
@@ -48,6 +54,7 @@ export const routes = [
       },
       {
         path: "form-layouts",
+        name: "form-layouts",
         component: () => import("@/pages/form-layouts.vue"),
         meta: {
           requiresAuth: true,
@@ -61,10 +68,12 @@ export const routes = [
     children: [
       {
         path: "login",
+        name: "login",
         component: () => import("@/pages/login.vue"),
       },
       {
         path: "register",
+        name: "register",
         component: () => import("@/pages/register.vue"),
       },
       {

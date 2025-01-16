@@ -6,8 +6,7 @@ export const useApi = () => {
       const response = await axios.get(url);
       return response.data;
     } catch (error) {
-      console.error("API Error:", error);
-      throw error;
+      return error;
     }
   };
 
@@ -16,8 +15,7 @@ export const useApi = () => {
       const response = await axios.post(url, data);
       return response.data;
     } catch (error) {
-      console.error("API Error:", error);
-      throw error;
+      return error;
     }
   };
 

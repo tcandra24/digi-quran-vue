@@ -7,6 +7,21 @@ import VerticalNavLayout from "@layouts/components/VerticalNavLayout.vue";
 import Footer from "@/layouts/components/Footer.vue";
 import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue";
 import UserProfile from "@/layouts/components/UserProfile.vue";
+
+// import { useRoute } from "vue-router";
+
+// const route = useRoute();
+
+// const breadcrumbs = computed(() => {
+//   const matched = route.matched;
+
+//   return matched.map((route) => ({
+//     text: route.meta.breadcrumb || route.name,
+//     to: route.meta.breadcrumb
+//       ? { name: route.name, params: route.params }
+//       : null,
+//   }));
+// });
 </script>
 
 <template>
@@ -52,6 +67,16 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
     <template #vertical-nav-content>
       <NavItems />
     </template>
+
+    <!-- <VBreadcrumbs :items="breadcrumbs">
+      <template v-slot:divider>
+        <VIcon icon="ri-arrow-right-s-line"></VIcon>
+      </template>
+      <template v-slot:item="{ item }">
+        <router-link v-if="item.to" :to="item.to">{{ item.text }}</router-link>
+        <span v-else>{{ item.text }}</span>
+      </template>
+    </VBreadcrumbs> -->
 
     <!-- 👉 Pages -->
     <RouterView />

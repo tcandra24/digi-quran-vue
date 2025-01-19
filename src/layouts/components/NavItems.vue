@@ -23,7 +23,7 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
   <VerticalNavLink
     :item="{
       title: 'Quran',
-      icon: 'ri-user-settings-line',
+      icon: 'ri-book-line',
       to: '/quran',
     }"
   />
@@ -37,7 +37,7 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
   <VerticalNavLink
     :item="{
       title: 'About',
-      icon: 'ri-user-settings-line',
+      icon: 'ri-profile-line',
       to: '/account-settings',
     }"
   />

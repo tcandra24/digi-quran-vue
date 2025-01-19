@@ -10,6 +10,7 @@ export const routes = [
         component: () => import("@/pages/dashboard.vue"),
         meta: {
           requiresAuth: true,
+          breadcrumb: "Dashboard",
         },
       },
       {
@@ -18,6 +19,16 @@ export const routes = [
         component: () => import("@/pages/quran/index.vue"),
         meta: {
           requiresAuth: true,
+          breadcrumb: "Quran",
+        },
+      },
+      {
+        path: "quran/:id",
+        name: "quran.show",
+        component: () => import("@/pages/quran/show.vue"),
+        meta: {
+          requiresAuth: true,
+          breadcrumb: "Quran Detail",
         },
       },
       {

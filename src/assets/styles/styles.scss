@@ -1,1 +1,14 @@
 // Write your overrides
+@import url("https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+@font-face {
+  font-family: "Amiri";
+  src: url("/assets/fonts/Amiri-Regular.ttf") format("truetype"),
+    url("/assets/fonts/Amiri-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.arabic-font {
+  font-family: "Amiri", serif;
+}

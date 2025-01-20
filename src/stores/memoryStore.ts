@@ -11,11 +11,6 @@ export const useMemoryStore = defineStore("memory", () => {
   const memory = ref<Memory[]>([]);
 
   const save = ({ surah, ayat }: { surah: number; ayat: number }) => {
-    // memory.value.push({
-    //   surah,
-    //   ayat,
-    //   done: false,
-    // });
     if (isObjectExists(memory.value, surah)) {
       const index = memory.value.findIndex(
         (element) => element.surah === surah

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
+
+import { useMemoryStore } from "@/stores/memoryStore";
 
 interface DetailSurah {
   nomorAyat: number;
@@ -22,11 +24,17 @@ interface Surah {
   ayat: Array<DetailSurah>;
 }
 
+const store = useMemoryStore();
+const { save } = store;
+
 const route = useRoute();
 const id: string = route.params.id as string;
 
 const surah = ref<Surah>();
 const loading = ref<boolean>(false);
+
+const scrollEnd = ref(null);
+let observer: any = null;
 
 const getData = async (id: string) => {
   try {
@@ -42,8 +50,47 @@ const getData = async (id: string) => {
   }
 };
 
-onMounted(() => {
-  getData(id);
+const markAsRead = (ayat: number) => {
+  console.log(ayat);
+  save({
+    surah: +id,
+    ayat,
+  });
+};
+
+onMounted(async () => {
+  await getData(id);
+
+  if (surah.value) {
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (entry.isIntersecting) {
+            const ayat: string = id.split("-")[1];
+            markAsRead(+ayat);
+          }
+        });
+      },
+      { root: null, threshold: 0.1 }
+    );
+
+    surah.value.ayat.forEach((ayat: DetailSurah) => {
+      const element = document.getElementById(`ayat-${ayat.nomorAyat}`);
+      if (element) observer.observe(element);
+    });
+
+    if (scrollEnd.value) {
+      observer.observe(scrollEnd.value);
+    }
+  }
+});
+
+onBeforeUnmount(() => {
+  if (observer) {
+    observer.disconnect();
+    observer = null;
+  }
 });
 </script>
 
@@ -81,22 +128,41 @@ onMounted(() => {
     </VRow>
     <VRow>
       <VCol cols="12">
-        <VList lines="two">
+        <VList lines="three">
           <VListItem
             v-for="ayat in surah?.ayat"
             :key="ayat.nomorAyat"
             class="text-right"
+            :id="'ayat-' + ayat.nomorAyat"
           >
-            <template v-slot:title>
-              <h1 class="my-5 arabic-font">{{ ayat.teksArab }}</h1>
+            <template v-slot:prepend>
+              <h3 class="px-10">{{ ayat.nomorAyat }}</h3>
             </template>
-            <template v-slot:subtitle>
-              <h2 class="mb-0 font-weight-bold">{{ ayat.teksLatin }}</h2>
-              <h3 class="mb-0 text-h5">{{ ayat.teksIndonesia }}</h3>
+            <template v-slot:title>
+              <h1 class="my-5 arabic-font text-wrap line-height-normal">
+                {{ ayat.teksArab }}
+              </h1>
+            </template>
+            <template v-slot:subtitle class="custom-line">
+              <p class="mb-2 font-weight-bold text-h5 text-justify">
+                {{ ayat.teksLatin }}
+              </p>
+              <p class="mb-2 text-h5 text-justify">{{ ayat.teksIndonesia }}</p>
             </template>
           </VListItem>
+          <div ref="scrollEnd" id="scroll-end"></div>
         </VList>
       </VCol>
     </VRow>
   </div>
 </template>
+
+<style scoped>
+.line-height-normal {
+  line-height: normal;
+}
+
+.custom-line {
+  line-clamp: unset !important;
+}
+</style>

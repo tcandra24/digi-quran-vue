@@ -40,14 +40,14 @@ onMounted(() => {
       lg="3"
       sm="4"
       cols="12"
-      v-for="index in 8"
+      v-for="index in 16"
       :key="index"
       v-if="loading"
     >
       <VSkeletonLoader
         class="mx-auto border"
         max-width="300"
-        type="image, article"
+        type="article"
       ></VSkeletonLoader>
     </VCol>
 
@@ -55,25 +55,11 @@ onMounted(() => {
       lg="3"
       sm="4"
       cols="12"
-      v-for="(data, index) of surah"
+      v-for="data of surah"
       :key="data.nomor"
       v-else
     >
       <VCard>
-        <VImg
-          :lazy-src="`https://picsum.photos/10/6?image=${index + 1 * 5 + 10}`"
-          :src="`https://picsum.photos/700/300?image=${index + 1 * 5 + 10}`"
-        >
-          <template v-slot:placeholder>
-            <VRow align="center" class="fill-height ma-0" justify="center">
-              <VProgressCircular
-                color="grey-lighten-5"
-                indeterminate
-              ></VProgressCircular>
-            </VRow>
-          </template>
-        </VImg>
-
         <VCardItem>
           <VCardTitle>{{ data.namaLatin }}</VCardTitle>
           <VCardSubtitle>

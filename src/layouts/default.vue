@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import NavItems from "@/layouts/components/NavItems.vue";
 import logo from "@images/logo.svg?raw";
+// import logo from "@images/logo-digi-quran.png";
 import VerticalNavLayout from "@layouts/components/VerticalNavLayout.vue";
 
 // Components
@@ -52,8 +53,9 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
         <!-- eslint-enable -->
 
         <h1 class="font-weight-medium leading-normal text-xl text-uppercase">
-          Materio
+          Digital Quran
         </h1>
+        <!-- <VImg :src="logo"></VImg> -->
       </RouterLink>
 
       <IconBtn
@@ -79,7 +81,13 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
     </VBreadcrumbs> -->
 
     <!-- 👉 Pages -->
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <transition name="fade">
+        <KeepAlive>
+          <component :is="Component"></component>
+        </KeepAlive>
+      </transition>
+    </RouterView>
 
     <!-- 👉 Footer -->
     <template #footer>

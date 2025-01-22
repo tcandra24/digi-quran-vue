@@ -2,7 +2,8 @@
 import { useTheme } from "vuetify";
 import { useRouter } from "vue-router";
 
-import logo from "@images/logo.svg?raw";
+// import logo from "@images/logo.svg?raw";
+import logoDigiQuran from "@images/logo-digi-quran.png";
 import authV1MaskDark from "@images/pages/auth-v1-mask-dark.png";
 import authV1MaskLight from "@images/pages/auth-v1-mask-light.png";
 import authV1Tree2 from "@images/pages/auth-v1-tree-2.png";
@@ -71,10 +72,11 @@ const submit = async () => {
       <VCardItem class="justify-center">
         <RouterLink to="/" class="d-flex align-center gap-3">
           <!-- eslint-disable vue/no-v-html -->
-          <div class="d-flex" v-html="logo" />
+          <!-- <div class="d-flex" v-html="logo" />
           <h2 class="font-weight-medium text-2xl text-uppercase">
             Digital Quran
-          </h2>
+          </h2> -->
+          <VImg width="150" :src="logoDigiQuran"></VImg>
         </RouterLink>
       </VCardItem>
 

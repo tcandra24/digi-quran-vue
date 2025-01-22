@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import NavItems from "@/layouts/components/NavItems.vue";
-import logo from "@images/logo.svg?raw";
-// import logo from "@images/logo-digi-quran.png";
+// import logo from "@images/logo.svg?raw";
+import logoDigiQuran from "@images/logo-digi-quran.png";
 import VerticalNavLayout from "@layouts/components/VerticalNavLayout.vue";
 
 // Components
@@ -49,13 +49,13 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
     <template #vertical-nav-header="{ toggleIsOverlayNavActive }">
       <RouterLink to="/" class="app-logo app-title-wrapper">
         <!-- eslint-disable vue/no-v-html -->
-        <div class="d-flex" v-html="logo" />
+        <!-- <div class="d-flex" v-html="logo" /> -->
         <!-- eslint-enable -->
 
-        <h1 class="font-weight-medium leading-normal text-xl text-uppercase">
+        <!-- <h1 class="font-weight-medium leading-normal text-xl text-uppercase">
           Digital Quran
-        </h1>
-        <!-- <VImg :src="logo"></VImg> -->
+        </h1> -->
+        <VImg width="150" :src="logoDigiQuran"></VImg>
       </RouterLink>
 
       <IconBtn

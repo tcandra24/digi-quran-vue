@@ -1,14 +1,11 @@
 // Write your overrides
 @import url("https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
-@font-face {
-  font-family: "Amiri";
-  src: url("/assets/fonts/Amiri-Regular.ttf") format("truetype"),
-    url("/assets/fonts/Amiri-Bold.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 .arabic-font {
   font-family: "Amiri", serif;
+}
+
+.title-arabic-font {
+  font-family: "Rubik", serif;
 }

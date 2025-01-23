@@ -61,6 +61,9 @@ onMounted(() => {
     >
       <VCard>
         <VCardItem>
+          <template v-slot:append>
+            <p class="text-h4 title-arabic-font">{{ data.nama }}</p>
+          </template>
           <VCardTitle>{{ data.namaLatin }}</VCardTitle>
           <VCardSubtitle>
             <VBadge color="secondary" :content="data.arti" inline></VBadge>

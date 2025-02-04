@@ -32,6 +32,15 @@ export const routes = [
         },
       },
       {
+        path: "progress",
+        name: "progress.index",
+        component: () => import("@/pages/progress/index.vue"),
+        meta: {
+          requiresAuth: true,
+          breadcrumb: "Quran Detail",
+        },
+      },
+      {
         path: "account-settings",
         name: "account-settings",
         component: () => import("@/pages/account-settings.vue"),

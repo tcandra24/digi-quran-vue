@@ -65,8 +65,15 @@ onMounted(() => {
             <p class="text-h4 title-arabic-font">{{ data.nama }}</p>
           </template>
           <VCardTitle>{{ data.namaLatin }}</VCardTitle>
-          <VCardSubtitle>
+          <VCardSubtitle class="my-2">
             <VBadge color="secondary" :content="data.arti" inline></VBadge>
+          </VCardSubtitle>
+          <VCardSubtitle class="my-2">
+            <VBadge
+              color="primary"
+              :content="`Ayat : ${data.jumlahAyat}`"
+              inline
+            ></VBadge>
           </VCardSubtitle>
         </VCardItem>
 

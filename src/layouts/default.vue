@@ -81,13 +81,7 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
     </VBreadcrumbs> -->
 
     <!-- 👉 Pages -->
-    <RouterView v-slot="{ Component }">
-      <transition name="fade">
-        <KeepAlive>
-          <component :is="Component"></component>
-        </KeepAlive>
-      </transition>
-    </RouterView>
+    <RouterView />
 
     <!-- 👉 Footer -->
     <template #footer>

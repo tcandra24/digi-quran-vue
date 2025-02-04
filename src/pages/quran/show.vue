@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { useMemoryStore } from "@/stores/memoryStore";
 
@@ -28,12 +28,13 @@ const store = useMemoryStore();
 const { save } = store;
 
 const route = useRoute();
+const router = useRouter();
 const id: string = route.params.id as string;
 
 const surah = ref<Surah>();
 const loading = ref<boolean>(false);
 
-const scrollEnd = ref(null);
+// const scrollEnd = ref(null);
 let observer: any = null;
 
 const getData = async (id: string) => {
@@ -50,11 +51,12 @@ const getData = async (id: string) => {
   }
 };
 
-const markAsRead = (ayat: number) => {
-  console.log(ayat);
+const markAsRead = (ayat: number, name: string, total: number) => {
   save({
     surah: +id,
+    name,
     ayat,
+    total,
   });
 };
 
@@ -62,13 +64,31 @@ onMounted(async () => {
   await getData(id);
 
   if (surah.value) {
+    const activeSurah = store.memories.find(
+      (element) => surah.value && element.surah === surah.value.nomor
+    );
+    const surahSaved = surah.value.ayat.find(
+      (element) => element.nomorAyat === activeSurah?.ayat
+    );
+
+    if (surahSaved) {
+      const surahId = `#ayat-${surahSaved.nomorAyat}`;
+      const element = document.querySelector(surahId);
+      element?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+
     observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const id = entry.target.id;
+          const target = entry.target as HTMLElement;
+          const name: string = target.dataset.name ?? "";
+          const total: number = Number(target.dataset.total) ?? 0;
+          const id: string = target.id;
           if (entry.isIntersecting) {
             const ayat: string = id.split("-")[1];
-            markAsRead(+ayat);
+            markAsRead(+ayat, name, total);
           }
         });
       },
@@ -80,9 +100,9 @@ onMounted(async () => {
       if (element) observer.observe(element);
     });
 
-    if (scrollEnd.value) {
-      observer.observe(scrollEnd.value);
-    }
+    // if (scrollEnd.value) {
+    //   observer.observe(scrollEnd.value);
+    // }
   }
 });
 
@@ -134,6 +154,8 @@ onBeforeUnmount(() => {
             :key="ayat.nomorAyat"
             class="text-right"
             :id="'ayat-' + ayat.nomorAyat"
+            :data-total="surah?.jumlahAyat"
+            :data-name="surah?.namaLatin"
           >
             <template v-slot:prepend>
               <h3 class="px-10">{{ ayat.nomorAyat }}</h3>
@@ -150,7 +172,7 @@ onBeforeUnmount(() => {
               <p class="mb-2 text-h5 text-justify">{{ ayat.teksIndonesia }}</p>
             </template>
           </VListItem>
-          <div ref="scrollEnd" id="scroll-end"></div>
+          <!-- <div ref="scrollEnd" id="scroll-end"></div> -->
         </VList>
       </VCol>
     </VRow>

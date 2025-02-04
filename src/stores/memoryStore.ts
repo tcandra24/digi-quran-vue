@@ -1,43 +1,54 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useDebounceFn } from "@vueuse/core";
 
 interface Memory {
   surah: number;
+  name: string;
   ayat: number;
+  total: number;
   done: boolean;
 }
 
 export const useMemoryStore = defineStore("memory", () => {
-  const memory = ref<Memory[]>([]);
+  const memories = ref<Memory[]>([]);
 
-  const save = ({ surah, ayat }: { surah: number; ayat: number }) => {
-    if (isObjectExists(memory.value, surah)) {
-      const index = memory.value.findIndex(
-        (element) => element.surah === surah
-      );
-      memory.value[index] = {
+  const saveImmediate = ({
+    surah,
+    name,
+    ayat,
+    total,
+  }: {
+    surah: number;
+    name: string;
+    ayat: number;
+    total: number;
+  }) => {
+    // const token = localStorage.getItem("token");
+    // fetch('', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer ' + token
+    //   }
+    // })
+
+    memories.value = [
+      ...memories.value,
+      {
         surah,
+        name,
         ayat,
-        done: false,
-      };
-    } else {
-      memory.value = [
-        ...memory.value,
-        {
-          surah,
-          ayat,
-          done: false,
-        },
-      ];
-    }
+        total,
+        done: ayat === total ? true : false,
+      },
+    ];
   };
 
-  const isObjectExists = (array: Memory[], surah: number): boolean => {
-    return !!array.find((element: Memory) => element.surah === surah);
-  };
+  const save = useDebounceFn(saveImmediate, 1000);
 
   return {
-    memory,
+    memories,
     save,
   };
 });

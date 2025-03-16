@@ -21,16 +21,13 @@ export const useMemoryStore = defineStore("memory", () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await get(
-        "https://ejapi.vercel.app/api/website/digi-quran",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-            "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
-          },
-        }
-      );
+      const response = await get("/", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+          "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
+        },
+      });
 
       if (response.success) {
         memories.value = response.memories;
@@ -44,16 +41,13 @@ export const useMemoryStore = defineStore("memory", () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await destroy(
-        `https://ejapi.vercel.app/api/website/digi-quran/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-            "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
-          },
-        }
-      );
+      const response = await destroy(`/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+          "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
+        },
+      });
 
       if (response.success) {
         memories.value = response.memories;
@@ -83,7 +77,7 @@ export const useMemoryStore = defineStore("memory", () => {
 
       if (search) {
         const response = await put(
-          `https://ejapi.vercel.app/api/website/digi-quran/${search._id}`,
+          `/${search._id}`,
           {
             surah,
             name,
@@ -105,7 +99,7 @@ export const useMemoryStore = defineStore("memory", () => {
         }
       } else {
         const response = await post(
-          "https://ejapi.vercel.app/api/website/digi-quran",
+          "/",
           {
             surah,
             name,

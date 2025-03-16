@@ -12,7 +12,7 @@ interface Memory {
   done: boolean;
 }
 
-const { get, post, put } = useApi();
+const { get, post, put, destroy } = useApi();
 
 export const useMemoryStore = defineStore("memory", () => {
   const memories = ref<Memory[]>([]);
@@ -23,6 +23,29 @@ export const useMemoryStore = defineStore("memory", () => {
 
       const response = await get(
         "https://ejapi.vercel.app/api/website/digi-quran",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+            "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
+          },
+        }
+      );
+
+      if (response.success) {
+        memories.value = response.memories;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteData = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await destroy(
+        `https://ejapi.vercel.app/api/website/digi-quran/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -114,5 +137,6 @@ export const useMemoryStore = defineStore("memory", () => {
     memories,
     save,
     getData,
+    deleteData,
   };
 });

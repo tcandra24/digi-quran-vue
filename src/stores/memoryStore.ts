@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
+import { useApi } from "@/composables/useApi";
 
 interface Memory {
+  _id: string;
   surah: number;
   name: string;
   ayat: number;
@@ -10,10 +12,35 @@ interface Memory {
   done: boolean;
 }
 
+const { get, post, put } = useApi();
+
 export const useMemoryStore = defineStore("memory", () => {
   const memories = ref<Memory[]>([]);
 
-  const saveImmediate = ({
+  const getData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await get(
+        "https://ejapi.vercel.app/api/website/digi-quran",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+            "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
+          },
+        }
+      );
+
+      if (response.success) {
+        memories.value = response.memories;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const saveImmediate = async ({
     surah,
     name,
     ayat,
@@ -24,25 +51,61 @@ export const useMemoryStore = defineStore("memory", () => {
     ayat: number;
     total: number;
   }) => {
-    // const token = localStorage.getItem("token");
-    // fetch('', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'Bearer ' + token
-    //   }
-    // })
+    try {
+      const token = localStorage.getItem("token");
 
-    memories.value = [
-      ...memories.value,
-      {
-        surah,
-        name,
-        ayat,
-        total,
-        done: ayat === total ? true : false,
-      },
-    ];
+      const search = memories.value.find(
+        (m) => m.surah === surah && m.name === name
+      );
+
+      if (search) {
+        const response = await put(
+          `https://ejapi.vercel.app/api/website/digi-quran/${search._id}`,
+          {
+            surah,
+            name,
+            ayat,
+            total,
+            done: ayat === total,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+              "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
+            },
+          }
+        );
+
+        if (response.success) {
+          memories.value = response.memories;
+        }
+      } else {
+        const response = await post(
+          "https://ejapi.vercel.app/api/website/digi-quran",
+          {
+            surah,
+            name,
+            ayat,
+            total,
+            done: ayat === total,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+              "Digi-Quran-Secret": import.meta.env.VITE_SECRET,
+            },
+          }
+        );
+
+        if (response.success) {
+          memories.value = response.memories;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const save = useDebounceFn(saveImmediate, 1000);
@@ -50,5 +113,6 @@ export const useMemoryStore = defineStore("memory", () => {
   return {
     memories,
     save,
+    getData,
   };
 });

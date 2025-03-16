@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useMemoryStore } from "@/stores/memoryStore";
 
 const memoriesStore = useMemoryStore();
 
-const { memories, deleteData } = memoriesStore;
+const { deleteData } = memoriesStore;
+const { memories } = storeToRefs(memoriesStore);
 
 const dialog = ref(false);
 const selectedId = ref("");

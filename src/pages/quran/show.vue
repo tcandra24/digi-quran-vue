@@ -71,13 +71,11 @@ onMounted(async () => {
       (element) => element.nomorAyat === activeSurah?.ayat
     );
 
-    if (surahSaved) {
-      const surahId = `#ayat-${surahSaved.nomorAyat}`;
-      const element = document.querySelector(surahId);
-      element?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
+    const surahId = surahSaved ? `#ayat-${surahSaved.nomorAyat}` : "#top-page";
+    const element = document.querySelector(surahId);
+    element?.scrollIntoView({
+      behavior: "smooth",
+    });
 
     observer = new IntersectionObserver(
       (entries) => {
@@ -132,7 +130,7 @@ onBeforeUnmount(() => {
     </VRow>
   </div>
   <div v-else>
-    <VRow>
+    <VRow id="top-page">
       <VCol cols="12">
         <VCard>
           <VCardItem>

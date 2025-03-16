@@ -28,9 +28,19 @@ export const useApi = () => {
     }
   };
 
+  const destroy = async (url: string, headers: object = {}) => {
+    try {
+      const response = await axios.delete(url, headers);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
   return {
     get,
     post,
     put,
+    destroy,
   };
 };

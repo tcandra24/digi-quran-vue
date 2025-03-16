@@ -1,9 +1,24 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useMemoryStore } from "@/stores/memoryStore";
 
 const memoriesStore = useMemoryStore();
 
-const { memories } = memoriesStore;
+const { memories, deleteData } = memoriesStore;
+
+const dialog = ref(false);
+const selectedId = ref("");
+
+const deleteSurah = () => {
+  deleteData(selectedId.value);
+
+  dialog.value = false;
+};
+
+const openDialog = (id: string) => {
+  dialog.value = true;
+  selectedId.value = id;
+};
 </script>
 
 <template>
@@ -42,6 +57,14 @@ const { memories } = memoriesStore;
               variant="text"
               size="large"
             ></VBtn>
+            <VBtn
+              @click="openDialog(memory._id)"
+              icon="ri-delete-bin-line"
+              color="error"
+              variant="text"
+              size="large"
+              class="ml-2"
+            ></VBtn>
           </template>
         </VListItem>
       </VList>
@@ -51,6 +74,22 @@ const { memories } = memoriesStore;
         title="Data Not Found"
         type="error"
       ></VAlert>
+
+      <VDialog v-model="dialog" max-width="400" persistent>
+        <VCard
+          prepend-icon="ri-questionnaire-line"
+          text="Delete Surah From Memories"
+          title="Are you sure delete this surah?"
+        >
+          <template #actions>
+            <VSpacer></VSpacer>
+
+            <VBtn @click="deleteSurah"> Yes </VBtn>
+
+            <VBtn @click="dialog = false"> No </VBtn>
+          </template>
+        </VCard>
+      </VDialog>
     </VCol>
   </VRow>
 </template>

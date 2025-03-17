@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
     </VRow>
     <VRow>
       <VCol cols="12">
-        <VList lines="three">
+        <VList>
           <VListItem
             v-for="ayat in surah?.ayat"
             :key="ayat.nomorAyat"
@@ -158,17 +158,19 @@ onBeforeUnmount(() => {
             <template v-slot:prepend>
               <h3 class="px-10">{{ ayat.nomorAyat }}</h3>
             </template>
-            <template v-slot:title>
+            <VListItemTitle>
               <h1 class="my-5 arabic-font text-wrap line-height-normal">
                 {{ ayat.teksArab }}
               </h1>
-            </template>
-            <template v-slot:subtitle class="custom-line">
+            </VListItemTitle>
+            <VListItemSubtitle class="custom-line">
               <p class="mb-2 font-weight-bold text-h5 text-justify">
                 {{ ayat.teksLatin }}
               </p>
-              <p class="mb-2 text-h5 text-justify">{{ ayat.teksIndonesia }}</p>
-            </template>
+              <p class="mb-2 text-h5 text-justify">
+                {{ ayat.teksIndonesia }}
+              </p>
+            </VListItemSubtitle>
           </VListItem>
           <!-- <div ref="scrollEnd" id="scroll-end"></div> -->
         </VList>
@@ -179,10 +181,13 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .line-height-normal {
-  line-height: normal;
+  line-height: 2.4;
 }
 
 .custom-line {
   line-clamp: unset !important;
+  -webkit-line-clamp: unset !important;
+  white-space: normal;
+  overflow: visible;
 }
 </style>

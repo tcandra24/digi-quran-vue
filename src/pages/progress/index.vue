@@ -25,7 +25,7 @@ const openDialog = (id: string) => {
 
 <template>
   <VRow>
-    <VCol cols="6">
+    <VCol cols="12" lg="6" md="6">
       <VList lines="three" v-if="memories.length > 0">
         <VListItem v-for="(memory, index) in memories" :key="memory.ayat">
           <template #prepend>

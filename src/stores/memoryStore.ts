@@ -72,7 +72,7 @@ export const useMemoryStore = defineStore("memory", () => {
       const token = localStorage.getItem("token");
 
       const search = memories.value.find(
-        (m) => m.surah === surah && m.name === name
+        (m) => +m.surah === +surah && m.name === name
       );
 
       if (search) {

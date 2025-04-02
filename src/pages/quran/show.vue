@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, onMounted, onBeforeUnmount, shallowRef } from "vue";
+import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
 
 import { useMemoryStore } from "@/stores/memoryStore";
 
@@ -29,38 +29,76 @@ const { save } = store;
 
 const route = useRoute();
 const router = useRouter();
-const id: string = route.params.id as string;
+// const id: string = route.params.id as string;
+const id = ref<string | null>(null);
 
 const surah = ref<Surah>();
 const loading = ref<boolean>(false);
 
+const open = shallowRef(false);
+
 // const scrollEnd = ref(null);
-let observer: any = null;
+// let observer: any = null;
+let observer: IntersectionObserver | null = null;
 
 const getData = async (id: string) => {
+  loading.value = true;
+
   try {
-    loading.value = true;
     const response = await fetch(`https://equran.id/api/v2/surat/${id}`);
+    if (!response.ok) throw new Error("Failed to fetch surah data.");
+
     const json = await response.json();
+    if (!json.data) {
+      throw new Error("Invalid response format");
+    }
 
     surah.value = json.data;
-
-    loading.value = false;
   } catch (error) {
     console.log(error);
+  } finally {
+    loading.value = false;
   }
 };
 
 const markAsRead = (ayat: number, name: string, total: number) => {
-  save({
-    surah: +id,
-    name,
-    ayat,
-    total,
+  if (id.value) {
+    save({
+      surah: +id.value,
+      name,
+      ayat,
+      total,
+    });
+  }
+};
+
+const setupObserver = () => {
+  if (observer) observer.disconnect(); // Cleanup sebelum membuat observer baru
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          const name = target.dataset.name ?? "";
+          const total = Number(target.dataset.total) ?? 0;
+          const id = target.id;
+          const ayat = id.split("-")[1];
+
+          markAsRead(+ayat, name, total);
+        }
+      });
+    },
+    { root: null, threshold: 0.1 }
+  );
+
+  surah.value?.ayat.forEach((ayat) => {
+    const element = document.getElementById(`ayat-${ayat.nomorAyat}`);
+    if (element && observer) observer.observe(element);
   });
 };
 
-onMounted(async () => {
+const onLoadContent = async (id: string) => {
   await getData(id);
 
   if (surah.value) {
@@ -77,30 +115,21 @@ onMounted(async () => {
       behavior: "smooth",
     });
 
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const target = entry.target as HTMLElement;
-          const name: string = target.dataset.name ?? "";
-          const total: number = Number(target.dataset.total) ?? 0;
-          const id: string = target.id;
-          if (entry.isIntersecting) {
-            const ayat: string = id.split("-")[1];
-            markAsRead(+ayat, name, total);
-          }
-        });
-      },
-      { root: null, threshold: 0.1 }
-    );
+    setupObserver();
+  }
+};
 
-    surah.value.ayat.forEach((ayat: DetailSurah) => {
-      const element = document.getElementById(`ayat-${ayat.nomorAyat}`);
-      if (element) observer.observe(element);
-    });
+onMounted(() => {
+  if (typeof route.params.id === "string") {
+    id.value = route.params.id;
+    onLoadContent(id.value);
+  }
+});
 
-    // if (scrollEnd.value) {
-    //   observer.observe(scrollEnd.value);
-    // }
+onBeforeRouteUpdate((to) => {
+  if (typeof to.params.id === "string") {
+    id.value = to.params.id;
+    onLoadContent(id.value);
   }
 });
 
@@ -151,7 +180,7 @@ onBeforeUnmount(() => {
             v-for="ayat in surah?.ayat"
             :key="ayat.nomorAyat"
             class="text-right"
-            :id="'ayat-' + ayat.nomorAyat"
+            :id="`ayat-${ayat.nomorAyat}`"
             :data-total="surah?.jumlahAyat"
             :data-name="surah?.namaLatin"
           >
@@ -176,6 +205,43 @@ onBeforeUnmount(() => {
         </VList>
       </VCol>
     </VRow>
+    <VFab
+      color="primary"
+      prepend-icon="$vuetify"
+      app
+      location="bottom center"
+      size="x-large"
+      icon
+    >
+      <VIcon>{{ open ? "ri-close-large-line" : "ri-menu-line" }}</VIcon>
+      <VSpeedDial
+        v-model="open"
+        location="top center"
+        transition="slide-y-reverse-transition"
+        activator="parent"
+      >
+        <VBtn
+          key="2"
+          color="secondary"
+          append-icon="ri-arrow-right-line"
+          rounded="xl"
+          v-if="id && +id < 114"
+          :to="{ name: 'quran.show', params: { id: +id + 1 } }"
+        >
+          Next
+        </VBtn>
+        <VBtn
+          key="1"
+          color="secondary"
+          prepend-icon="ri-arrow-left-line"
+          rounded="xl"
+          v-if="id && +id > 1"
+          :to="{ name: 'quran.show', params: { id: +id - 1 } }"
+        >
+          Previous
+        </VBtn>
+      </VSpeedDial>
+    </VFab>
   </div>
 </template>
 

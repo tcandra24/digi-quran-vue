@@ -205,18 +205,11 @@ onBeforeUnmount(() => {
         </VList>
       </VCol>
     </VRow>
-    <VFab
-      color="primary"
-      prepend-icon="$vuetify"
-      app
-      location="bottom center"
-      size="x-large"
-      icon
-    >
+    <VFab color="primary" app location="bottom right" size="x-large" icon>
       <VIcon>{{ open ? "ri-close-large-line" : "ri-menu-line" }}</VIcon>
       <VSpeedDial
         v-model="open"
-        location="top center"
+        location="left center"
         transition="slide-y-reverse-transition"
         activator="parent"
       >
@@ -229,6 +222,14 @@ onBeforeUnmount(() => {
           :to="{ name: 'quran.show', params: { id: +id + 1 } }"
         >
           Next
+        </VBtn>
+        <VBtn
+          key="2"
+          color="secondary"
+          rounded="xl"
+          icon="ri-book-line"
+          :to="{ name: 'quran' }"
+        >
         </VBtn>
         <VBtn
           key="1"

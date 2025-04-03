@@ -1,13 +1,18 @@
 <script lang="ts" setup>
+import { onMounted } from "vue";
+
 import NavItems from "@/layouts/components/NavItems.vue";
 // import logo from "@images/logo.svg?raw";
 import logoDigiQuran from "@images/logo-digi-quran.png";
 import VerticalNavLayout from "@layouts/components/VerticalNavLayout.vue";
+import BottomNavLayout from "@layouts/components/BottomNavBar.vue";
 
 // Components
 import Footer from "@/layouts/components/Footer.vue";
 import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue";
 import UserProfile from "@/layouts/components/UserProfile.vue";
+
+import { useDisplay } from "vuetify";
 
 // import { useRoute } from "vue-router";
 
@@ -23,13 +28,18 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
 //       : null,
 //   }));
 // });
+const { mobile } = useDisplay();
+
+onMounted(() => {
+  console.log(mobile.value);
+});
 </script>
 
 <template>
   <VerticalNavLayout>
     <!-- 👉 navbar -->
     <template #navbar="{ toggleVerticalOverlayNavActive }">
-      <div class="d-flex h-100 align-center">
+      <div class="d-flex h-100 align-center" v-if="!mobile">
         <!-- 👉 Vertical nav toggle in overlay mode -->
         <IconBtn
           class="ms-n3 d-lg-none"
@@ -43,6 +53,9 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
         <NavbarThemeSwitcher class="me-2" />
 
         <UserProfile />
+      </div>
+      <div class="d-flex h-100 align-center" v-else>
+        <VImg width="50" :src="logoDigiQuran"></VImg>
       </div>
     </template>
 
@@ -67,8 +80,14 @@ import UserProfile from "@/layouts/components/UserProfile.vue";
     </template>
 
     <template #vertical-nav-content>
-      <NavItems />
+      <NavItems v-if="!mobile" />
     </template>
+
+    <BottomNavLayout v-if="mobile" />
+
+    <!-- <template #vertical-nav-content>
+      <NavItems />
+    </template> -->
 
     <!-- <VBreadcrumbs :items="breadcrumbs">
       <template v-slot:divider>

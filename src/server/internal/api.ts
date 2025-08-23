@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "https://ejapi.vercel.app/api/website/digi-quran",
+  baseURL: import.meta.env.VITE_INTERNAL_API_URL,
   headers: {
     "Content-Type": "application/json",
   },

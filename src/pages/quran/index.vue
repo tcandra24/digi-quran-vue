@@ -1,33 +1,10 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
+import { useSurahStore } from "@stores/surahStore";
 
-interface Surah {
-  nomor: number;
-  nama: string;
-  namaLatin: string;
-  jumlahAyat: number;
-  tempatTurun: string;
-  arti: string;
-  deskripsi: string;
-  audio: object;
-}
-
-const surah = ref<Surah[]>([]);
-const loading = ref<boolean>(false);
-
-const getData = async () => {
-  try {
-    loading.value = true;
-    const response = await fetch("https://equran.id/api/v2/surat");
-    const json = await response.json();
-
-    surah.value = json.data;
-
-    loading.value = false;
-  } catch (error) {
-    console.log(error);
-  }
-};
+const store = useSurahStore();
+const { allSurah, loading } = storeToRefs(store);
+const { getData } = store;
 
 onMounted(() => {
   getData();
@@ -55,30 +32,35 @@ onMounted(() => {
       lg="3"
       sm="4"
       cols="12"
-      v-for="data of surah"
+      v-for="(data, index) of allSurah"
       :key="data.nomor"
       v-else
     >
       <VCard>
+        <VImg
+          height="200px"
+          :lazy-src="`https://picsum.photos/10/6?image=${index * 5 + 10}`"
+          :src="`https://picsum.photos/600/500?image=${index * 5 + 10}`"
+          cover
+        >
+          <VRow>
+            <VCol cols="12">
+              <VChip class="ma-3"> {{ data.tempatTurun }} </VChip>
+            </VCol>
+          </VRow>
+        </VImg>
         <VCardItem>
           <template v-slot:append>
             <p class="text-h4 title-arabic-font">{{ data.nama }}</p>
           </template>
           <VCardTitle>{{ data.namaLatin }}</VCardTitle>
           <VCardSubtitle class="my-2">
-            <VBadge color="secondary" :content="data.arti" inline></VBadge>
-          </VCardSubtitle>
-          <VCardSubtitle class="my-2">
-            <VBadge
-              color="primary"
-              :content="`Ayat : ${data.jumlahAyat}`"
-              inline
-            ></VBadge>
+            <VChip color="primary" class="m-3"> {{ data.arti }} </VChip>
           </VCardSubtitle>
         </VCardItem>
 
         <VCardText>
-          <p class="mb-0">{{ data.tempatTurun }}</p>
+          <p class="mb-0">{{ `Ayat : ${data.jumlahAyat}` }}</p>
         </VCardText>
 
         <VBtn

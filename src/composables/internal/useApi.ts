@@ -1,4 +1,4 @@
-import axios from "@/server/api";
+import axios from "@/server/internal/api";
 
 export const useApi = () => {
   const get = async (url: string, headers: object = {}) => {

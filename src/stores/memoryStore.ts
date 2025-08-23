@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
-import { useApi } from "@/composables/useApi";
+import { useApi } from "@/composables/internal/useApi";
 
 interface Memory {
   _id: string;

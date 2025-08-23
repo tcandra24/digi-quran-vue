@@ -1,65 +1,24 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, shallowRef } from "vue";
-import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 
 import { useMemoryStore } from "@/stores/memoryStore";
+import { useSurahStore } from "@stores/surahStore";
 
-interface DetailSurah {
-  nomorAyat: number;
-  teksArab: string;
-  teksLatin: string;
-  teksIndonesia: string;
-  audio: object;
-}
+const storeMemory = useMemoryStore();
+const { save } = storeMemory;
 
-interface Surah {
-  nomor: number;
-  nama: string;
-  namaLatin: string;
-  jumlahAyat: number;
-  tempatTurun: string;
-  arti: string;
-  deskripsi: string;
-  audio: object;
-  ayat: Array<DetailSurah>;
-}
-
-const store = useMemoryStore();
-const { save } = store;
+const storeSurah = useSurahStore();
+const { surah, loading } = storeToRefs(storeSurah);
+const { showData } = storeSurah;
 
 const route = useRoute();
-const router = useRouter();
-// const id: string = route.params.id as string;
-const id = ref<string | null>(null);
 
-const surah = ref<Surah>();
-const loading = ref<boolean>(false);
+const id = ref<string | null>(null);
 
 const open = shallowRef(false);
 
-// const scrollEnd = ref(null);
-// let observer: any = null;
 let observer: IntersectionObserver | null = null;
-
-const getData = async (id: string) => {
-  loading.value = true;
-
-  try {
-    const response = await fetch(`https://equran.id/api/v2/surat/${id}`);
-    if (!response.ok) throw new Error("Failed to fetch surah data.");
-
-    const json = await response.json();
-    if (!json.data) {
-      throw new Error("Invalid response format");
-    }
-
-    surah.value = json.data;
-  } catch (error) {
-    console.log(error);
-  } finally {
-    loading.value = false;
-  }
-};
 
 const markAsRead = (ayat: number, name: string, total: number) => {
   if (id.value) {
@@ -99,10 +58,10 @@ const setupObserver = () => {
 };
 
 const onLoadContent = async (id: string) => {
-  await getData(id);
+  await showData(id);
 
   if (surah.value) {
-    const activeSurah = store.memories.find(
+    const activeSurah = storeMemory.memories.find(
       (element) => surah.value && element.surah === surah.value.nomor
     );
     const surahSaved = surah.value.ayat.find(

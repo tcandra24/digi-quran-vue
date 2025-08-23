@@ -7,7 +7,7 @@ export const routes = [
       {
         path: "dashboard",
         name: "dashboard",
-        component: () => import("@/pages/dashboard.vue"),
+        component: () => import("@/views/dashboard.vue"),
         meta: {
           requiresAuth: true,
           breadcrumb: "Dashboard",
@@ -16,7 +16,7 @@ export const routes = [
       {
         path: "quran",
         name: "quran",
-        component: () => import("@/pages/quran/index.vue"),
+        component: () => import("@/views/quran/index.vue"),
         meta: {
           requiresAuth: true,
           breadcrumb: "Quran",
@@ -25,7 +25,7 @@ export const routes = [
       {
         path: "quran/:id",
         name: "quran.show",
-        component: () => import("@/pages/quran/show.vue"),
+        component: () => import("@/views/quran/show.vue"),
         meta: {
           requiresAuth: true,
           breadcrumb: "Quran Detail",
@@ -34,7 +34,7 @@ export const routes = [
       {
         path: "progress",
         name: "progress.index",
-        component: () => import("@/pages/progress/index.vue"),
+        component: () => import("@/views/progress/index.vue"),
         meta: {
           requiresAuth: true,
           breadcrumb: "Quran Detail",
@@ -43,7 +43,7 @@ export const routes = [
       {
         path: "account-settings",
         name: "account-settings",
-        component: () => import("@/pages/account-settings.vue"),
+        component: () => import("@/views/account-settings.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -57,7 +57,7 @@ export const routes = [
       {
         path: "login",
         name: "login",
-        component: () => import("@/pages/auth/login.vue"),
+        component: () => import("@/views/auth/login.vue"),
         meta: {
           guest: true,
         },
@@ -65,14 +65,14 @@ export const routes = [
       {
         path: "register",
         name: "register",
-        component: () => import("@/pages/auth/register.vue"),
+        component: () => import("@/views/auth/register.vue"),
         meta: {
           guest: true,
         },
       },
       {
         path: "/:pathMatch(.*)*",
-        component: () => import("@/pages/[...error].vue"),
+        component: () => import("@/views/[...error].vue"),
       },
     ],
   },

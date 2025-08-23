@@ -2,15 +2,15 @@
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useMemoryStore } from "@/stores/memoryStore";
-// import AnalyticsAward from "@/views/dashboard/AnalyticsAward.vue";
-// import AnalyticsBarCharts from "@/views/dashboard/AnalyticsBarCharts.vue";
-// import AnalyticsDepositWithdraw from "@/views/dashboard/AnalyticsDepositWithdraw.vue";
-// import AnalyticsSalesByCountries from "@/views/dashboard/AnalyticsSalesByCountries.vue";
-// import AnalyticsTotalEarning from "@/views/dashboard/AnalyticsTotalEarning.vue";
-// import AnalyticsTotalProfitLineCharts from "@/views/dashboard/AnalyticsTotalProfitLineCharts.vue";
-import AnalyticsTransactions from "@/views/dashboard/AnalyticsTransactions.vue";
-// import AnalyticsUserTable from "@/views/dashboard/AnalyticsUserTable.vue";
-// import AnalyticsWeeklyOverview from "@/views/dashboard/AnalyticsWeeklyOverview.vue";
+// import AnalyticsAward from "@/components/dashboard/AnalyticsAward.vue";
+// import AnalyticsBarCharts from "@/components/dashboard/AnalyticsBarCharts.vue";
+// import AnalyticsDepositWithdraw from "@/components/dashboard/AnalyticsDepositWithdraw.vue";
+// import AnalyticsSalesByCountries from "@/components/dashboard/AnalyticsSalesByCountries.vue";
+// import AnalyticsTotalEarning from "@/components/dashboard/AnalyticsTotalEarning.vue";
+// import AnalyticsTotalProfitLineCharts from "@/components/dashboard/AnalyticsTotalProfitLineCharts.vue";
+import AnalyticsTransactions from "@/components/dashboard/AnalyticsTransactions.vue";
+// import AnalyticsUserTable from "@/components/dashboard/AnalyticsUserTable.vue";
+// import AnalyticsWeeklyOverview from "@/components/dashboard/AnalyticsWeeklyOverview.vue";
 // import CardStatisticsVertical from "@core/components/cards/CardStatisticsVertical.vue";
 
 // const totalProfit = {
@@ -66,7 +66,7 @@ const statistics = ref([
   <VRow class="match-height">
     <VCol cols="12">
       <!-- <AnalyticsAward /> -->
-      <v-alert text="Welcome to DigiQuran" title="Hello" type="info"></v-alert>
+      <VAlert text="Welcome to DigiQuran" title="Hello" type="info"></VAlert>
     </VCol>
 
     <VCol cols="12">

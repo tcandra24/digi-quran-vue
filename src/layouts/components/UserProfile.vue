@@ -59,21 +59,12 @@ const doLogout = () => {
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem link :to="{ name: 'account-settings' }">
             <template #prepend>
               <VIcon class="me-2" icon="ri-user-line" size="22" />
             </template>
 
             <VListItemTitle>Profile</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Settings -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon class="me-2" icon="ri-settings-4-line" size="22" />
-            </template>
-
-            <VListItemTitle>Settings</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->

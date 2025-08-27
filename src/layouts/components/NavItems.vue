@@ -46,7 +46,7 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
     :item="{
       title: 'About',
       icon: 'ri-profile-line',
-      to: '/account-settings',
+      to: '/about',
     }"
   />
 </template>

@@ -41,6 +41,14 @@ export const routes = [
         },
       },
       {
+        path: "about",
+        name: "about",
+        component: () => import("@/views/about/index.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "account-settings",
         name: "account-settings",
         component: () => import("@/views/account-settings.vue"),

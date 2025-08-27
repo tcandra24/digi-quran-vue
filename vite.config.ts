@@ -7,6 +7,8 @@ import { defineConfig } from "vite";
 import vuetify from "vite-plugin-vuetify";
 import svgLoader from "vite-svg-loader";
 
+import { VitePWA } from "vite-plugin-pwa";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -44,6 +46,16 @@ export default defineConfig({
       ignore: ["useCookies", "useStorage"],
     }),
     svgLoader(),
+    VitePWA({
+      // PWA configuration options
+      registerType: "autoUpdate",
+      includeAssets: ["favicon.svg", "apple-touch-icon.png"],
+      manifest: {
+        name: "Digital Quran",
+        short_name: "DigiQuran",
+        theme_color: "#4b4cdc",
+      },
+    }),
   ],
   define: { "process.env": {} },
   resolve: {

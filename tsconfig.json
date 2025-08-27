@@ -24,18 +24,8 @@
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "skipLibCheck": true,
-    "types": ["vite/client", "vite-plugin-vue-layouts/client"]
+    "types": ["vite/client", "vite-plugin-vue-layouts/client", "vite-plugin-pwa/client"]
   },
-  "include": [
-    "./typed-router.d.ts",
-    "./vite.config.*",
-    "./env.d.ts",
-    "./shims.d.ts",
-    "./src/**/*",
-    "./src/**/*.vue",
-    "./themeConfig.ts",
-    "./auto-imports.d.ts",
-    "./components.d.ts"
-  ],
+  "include": ["./typed-router.d.ts", "./vite.config.*", "./env.d.ts", "./shims.d.ts", "./src/**/*", "./src/**/*.vue", "./themeConfig.ts", "./auto-imports.d.ts", "./components.d.ts"],
   "exclude": ["./dist", "./node_modules"]
 }

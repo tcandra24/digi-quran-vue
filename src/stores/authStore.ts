@@ -3,8 +3,6 @@ import { ref } from "vue";
 
 import { useApi } from "@/composables/internal/useApi";
 
-import { useMemoryStore } from "./memoryStore";
-
 interface AuthLogin {
   email: string;
   password: string;
@@ -42,8 +40,6 @@ export const useAuthStore = defineStore("auth", () => {
         throw new Error("Failed to Login, Username or Password is wrong");
       }
 
-      const memory = useMemoryStore();
-
       user.value = {
         email: getUser.email,
         name: getUser.name,
@@ -52,8 +48,6 @@ export const useAuthStore = defineStore("auth", () => {
       isLoggedIn.value = true;
 
       localStorage.setItem("token", getToken);
-
-      memory.getData();
 
       return {
         success,

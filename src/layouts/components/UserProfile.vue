@@ -52,9 +52,9 @@ const doLogout = () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ store.user?.name }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemSubtitle>{{ store.user?.email }}</VListItemSubtitle>
           </VListItem>
           <VDivider class="my-2" />
 

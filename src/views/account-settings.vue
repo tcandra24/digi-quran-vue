@@ -2,7 +2,7 @@
 import { useRoute } from "vue-router";
 import AccountSettingsAccount from "@/components/pages/account-settings/AccountSettingsAccount.vue";
 import AccountSettingsNotification from "@/components/pages/account-settings/AccountSettingsNotification.vue";
-import AccountSettingsSecurity from "@/components/pages/account-settings/AccountSettingsSecurity.vue";
+// import AccountSettingsSecurity from "@/components/pages/account-settings/AccountSettingsSecurity.vue";
 
 const route = useRoute();
 
@@ -11,12 +11,12 @@ const activeTab = ref(route.params.tab);
 // tabs
 const tabs = [
   { title: "Account", icon: "ri-group-line", tab: "account" },
-  { title: "Security", icon: "ri-lock-line", tab: "security" },
-  {
-    title: "Notifications",
-    icon: "ri-notification-3-line",
-    tab: "notification",
-  },
+  // { title: "Security", icon: "ri-lock-line", tab: "security" },
+  // {
+  //   title: "Notifications",
+  //   icon: "ri-notification-3-line",
+  //   tab: "notification",
+  // },
 ];
 </script>
 
@@ -40,14 +40,14 @@ const tabs = [
       </VWindowItem>
 
       <!-- Security -->
-      <VWindowItem value="security">
+      <!-- <VWindowItem value="security">
         <AccountSettingsSecurity />
-      </VWindowItem>
+      </VWindowItem> -->
 
       <!-- Notification -->
-      <VWindowItem value="notification">
+      <!-- <VWindowItem value="notification">
         <AccountSettingsNotification />
-      </VWindowItem>
+      </VWindowItem> -->
     </VWindow>
   </div>
 </template>
